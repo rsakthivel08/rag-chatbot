@@ -1,0 +1,35 @@
+# Environment & secrets
+.env
+*.env
+
+# Python virtual environment
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# ChromaDB persisted data (large, not needed on GitHub)
+chroma_store/
+
+# HuggingFace model cache
+.cache/
+
+# VS Code settings
+.vscode/
+
+# Jupyter/Colab checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
