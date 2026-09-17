@@ -1,31 +1,21 @@
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_chroma import Chroma
+# retriever.py — similarity-search retriever over the shared vector store
+from ingest import get_store
 
-EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-CHROMA_DIR  = "chroma_store"
-COLLECTION  = "medical_knowledge"
 
 def build_retriever(k: int = 5):
-    #k=5 return the 5 most similar chunks to the query.
-    embeddings = HuggingFaceEmbeddings(model_name=EMBED_MODEL)
-    
-    vectorstore = Chroma(
-        collection_name=COLLECTION,
-        embedding_function=embeddings,
-        persist_directory=CHROMA_DIR,
-    )
-    
-    retriever = vectorstore.as_retriever(
-        search_type="similarity",  
+    """
+    Retriever over the shared (singleton) vector store.
+    k = number of most-similar chunks returned per query.
+    """
+    return get_store().as_retriever(
+        search_type="similarity",
         search_kwargs={"k": k},
     )
-    return retriever
-
 
 
 if __name__ == "__main__":
     retriever = build_retriever(k=5)
-    results = retriever.invoke("What are the symptoms of diabetes?")
+    results = retriever.invoke("What are the main points covered in these documents?")
     for i, doc in enumerate(results, 1):
         print(f"\n--- Result {i} (source: {doc.metadata.get('source')}) ---")
         print(doc.page_content[:300])

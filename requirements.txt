@@ -8,5 +8,8 @@ langchain-text-splitters
 chromadb
 sentence-transformers
 pypdf
+docx2txt
+beautifulsoup4
 python-dotenv
 streamlit
+streamlit-mic-recorder

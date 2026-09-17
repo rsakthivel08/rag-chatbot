@@ -2,6 +2,9 @@
 .env
 *.env
 
+# Codebuff thread metadata
+.freebuff/
+
 # Python virtual environment
 venv/
 env/
