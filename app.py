@@ -4,13 +4,22 @@ from typing import Optional
  
 # ── Third-party: env must be loaded BEFORE anything that reads env vars ───────
 from dotenv import load_dotenv
-load_dotenv()  # loads .env into os.environ immediately
+load_dotenv()  # loads .env into os.environ (local development)
+ 
+import streamlit as st
+ 
+# On Streamlit Community Cloud there is no .env — secrets live in the app's
+# dashboard settings. Merge them into os.environ so every module (Sarvam,
+# HuggingFace, Groq) finds them. Locally this is a no-op, and values already
+# set via .env or the shell always take precedence.
+try:
+    for _key, _val in st.secrets.items():
+        os.environ.setdefault(_key, str(_val))
+except Exception:
+    pass  # local run — no secrets file configured
  
 # Suppress noisy HuggingFace logs before model loads
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
- 
-# ── Streamlit (import after env is ready) ────────────────────────────────────
-import streamlit as st
  
 # ── Internal modules ──────────────────────────────────────────────────────────
 from langchain_core.documents import Document
